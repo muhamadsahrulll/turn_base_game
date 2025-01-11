@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI; // Import untuk mengontrol UI Button
 
 public class BattleSystem : MonoBehaviour
 {
@@ -21,6 +22,11 @@ public class BattleSystem : MonoBehaviour
     public TextMeshProUGUI enemyDefenseText;
 
     public TextMeshProUGUI logText;
+
+    // Heal Button and Cooldown
+    public Button healButton; // Reference to Heal button
+    public float healCooldown = 2f; // Cooldown in seconds
+    private bool isHealOnCooldown = false;
 
     private bool isPlayerTurn = true;
 
@@ -51,6 +57,30 @@ public class BattleSystem : MonoBehaviour
         logText.text = "Player is defending!";
         isPlayerTurn = false;
         Invoke("EnemyTurn", 1f);
+    }
+
+    public void OnHealButton()
+    {
+        if (!isPlayerTurn || isHealOnCooldown) return;
+
+        int healAmount = 20; // Heal amount (can be adjusted)
+        playerUnit.Heal(healAmount);
+        logText.text = $"Player healed for {healAmount} health!";
+
+        StartCoroutine(HealCooldown());
+        CheckBattleOutcome();
+
+        isPlayerTurn = false;
+        Invoke("EnemyTurn", 1f);
+    }
+
+    private IEnumerator HealCooldown()
+    {
+        isHealOnCooldown = true;
+        healButton.interactable = false; // Disable the Heal button
+        yield return new WaitForSeconds(healCooldown); // Wait for cooldown duration
+        isHealOnCooldown = false;
+        healButton.interactable = true; // Re-enable the Heal button
     }
 
     void EnemyTurn()

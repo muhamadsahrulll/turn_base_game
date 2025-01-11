@@ -1386,6 +1386,8 @@ MonoBehaviour:
   enemyAttackText: {fileID: 1835971321}
   enemyDefenseText: {fileID: 1253922720}
   logText: {fileID: 1676027582}
+  healButton: {fileID: 1729458578}
+  healCooldown: 4
 --- !u!4 &1450595126
 Transform:
   m_ObjectHideFlags: 0
@@ -1728,7 +1730,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1450595125}
         m_TargetAssemblyTypeName: BattleSystem, Assembly-CSharp
-        m_MethodName: OnDefendButton
+        m_MethodName: OnHealButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
